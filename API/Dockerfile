@@ -11,7 +11,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MockAPI/MockAPI.csproj", "API/"]
+COPY ["API/API.csproj", "API/"]
 COPY ["Application/Application.csproj", "Application/"]
 RUN dotnet restore "./API/API.csproj"
 COPY . .
