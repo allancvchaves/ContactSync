@@ -8,65 +8,41 @@ namespace Tests
 {
     public class ContactsControllerTest
     {
-        private Mock<IMailChimpService> _mailChimpServiceMock;
+        private Mock<IMockAPIService> _mockAPIService;
+        private Mock<IMailChimpService> _mailChimpService;
         private ContactsController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _mailChimpServiceMock = new Mock<IMailChimpService>();
-            _controller = new ContactsController(_mailChimpServiceMock.Object);
+            _mockAPIService = new Mock<IMockAPIService>();
+            _mailChimpService = new Mock<IMailChimpService>();
+            _controller = new ContactsController(_mailChimpService.Object, _mockAPIService.Object);
         }
 
         [Test]
         public async Task SyncContacts_ReturnsSyncContactsDto()
         {
             // Arrange
-            var contacts = new List<Contact>
+            var mockContacts = new List<Contact>
             {
-                new() { FirstName = "Michael", LastName = "Johnson", Email = "michael.johnson@gmail.com" },
-                new() { FirstName = "Emily", LastName = "Davis", Email = "emily.davis@hotmail.com" },
+                new Contact { FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" },
+                new Contact { FirstName = "Jane", LastName = "Smith", Email = "jane.smith@example.com" }
             };
 
-            const int expectedSyncCount = 2;
 
-            _mailChimpServiceMock
-                .Setup(service => service.SyncToMailChimp())
-                .ReturnsAsync((contacts, expectedSyncCount));
+            // Mock the service methods
+            _mockAPIService.Setup(service => service.GetMockContacts()).ReturnsAsync(mockContacts);
+            _mailChimpService.Setup(service => service.SyncToMailChimp(mockContacts)).ReturnsAsync(mockContacts);
 
             // Act
             var result = await _controller.SyncContacts();
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.TypeOf<SyncContactsDto>());
-            Assert.That(result.SyncedContacts, Is.EqualTo(expectedSyncCount));
-            Assert.That(result.Contacts, Has.Count.EqualTo(contacts.Count));
+            var okResult = result as SyncContactsDto;
+            Assert.IsNotNull(okResult);
+            Assert.That(okResult.Contacts.Count, Is.EqualTo(mockContacts.Count));
+            Assert.That(okResult.Contacts[0].Email, Is.EqualTo(mockContacts[0].Email));
         }
-
-        [Test]
-        public void SyncContacts_ThrowsException_WhenServiceFails()
-        {
-            // Arrange
-            _mailChimpServiceMock
-                .Setup(service => service.SyncToMailChimp())
-                .ThrowsAsync(new InvalidOperationException("Something went wrong"));
-
-            // Act & Assert
-            var exception = Assert.ThrowsAsync<InvalidOperationException>(_controller.SyncContacts);
-            Assert.That(exception.Message, Is.EqualTo("Something went wrong"));
-        }
-
-        [Test]
-        public async Task ClearList_ShouldCallRemoveAllMembersOnce()
-        {
-            // Act
-            await _controller.ClearList();
-
-            // Assert
-            _mailChimpServiceMock.Verify(service => service.RemoveAllMembers(), Times.Once,
-                "RemoveAllMembers should be called exactly once.");
-        }
-
     }
 }

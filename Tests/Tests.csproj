@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MockAPI\MockAPI.csproj" />
+    <ProjectReference Include="..\MockAPI\API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

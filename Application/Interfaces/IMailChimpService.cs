@@ -2,7 +2,6 @@
 {
     public interface IMailChimpService
     {
-        public Task<(List<Entities.Contact> Contacts, int SyncCount)> SyncToMailChimp();
-        public Task RemoveAllMembers();
+        public Task<List<Entities.Contact>> SyncToMailChimp(List<Entities.Contact> contacts);
     }
 }

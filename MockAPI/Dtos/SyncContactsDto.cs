@@ -4,13 +4,12 @@ namespace MockAPI.Dtos
 {
     public class SyncContactsDto
     {
-        public List<ContactDto> Contacts { get; set; }
         public int SyncedContacts { get; set; }
-
-
+        public List<ContactDto> Contacts { get; set; }
         public SyncContactsDto(List<Contact> contacts)
         {
             Contacts = contacts.ConvertAll(c => new ContactDto(c));
+            SyncedContacts = contacts.Count;
         }
     }
 
@@ -19,6 +18,11 @@ namespace MockAPI.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+
+        public ContactDto()
+        {
+
+        }
 
         public ContactDto(Contact contact)
         {

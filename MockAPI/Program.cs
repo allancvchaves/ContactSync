@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-ApplicationServices.RegisterMailChimpService(builder.Services);
+ApplicationServices.RegisterServices(builder.Services);
 
 var app = builder.Build();
 

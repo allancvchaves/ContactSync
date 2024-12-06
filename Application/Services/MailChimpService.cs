@@ -17,50 +17,25 @@ namespace Application.Services
             _mailChimpManager = new MailChimpManager(apiKey);
         }
 
-        public async Task<(List<Entities.Contact> Contacts, int SyncCount)> SyncToMailChimp()
+        public async Task<List<Entities.Contact>> SyncToMailChimp(List<Entities.Contact> contacts)
         {
             // Get or create the list
             var list = (await _mailChimpManager.Lists.GetAllAsync()).FirstOrDefault() ?? await CreateList();
 
             // Generate and synchronize contacts
-            var contacts = Entities.Contact.GenerateContactList();
-            var syncCount = await AddListMembers(contacts, list.Id);
+            var addedContacts = await AddListMembers(contacts, list.Id);
 
-            return (contacts, syncCount);
+            return addedContacts;
         }
 
-        public async Task RemoveAllMembers()
-        {
-            try
-            {
-                var listCollection = await _mailChimpManager.Lists.GetAllAsync();
-                var defaultList = listCollection.FirstOrDefault()
-                    ?? throw new Exception("No list was found in this account.");
-
-                var membersToDelete = await _mailChimpManager.Members.GetAllAsync(defaultList.Id);
-                var apiMembers = membersToDelete
-                    .Where(m => m.Source?.Equals("API - Generic", StringComparison.OrdinalIgnoreCase) == true)
-                    .ToList();
-
-                if (apiMembers.Count == 0)
-                    return;
-
-                foreach (var member in apiMembers)
-                {
-                    await _mailChimpManager.Members.DeleteAsync(defaultList.Id, member.EmailAddress);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("An error occurred while deleting members.", ex);
-            }
-        }
-
-        private async Task<int> AddListMembers(List<Entities.Contact> contacts, string listId)
+        private async Task<List<Entities.Contact>> AddListMembers(List<Entities.Contact> contacts, string listId)
         {
             var existingEmails = (await _mailChimpManager.Members.GetAllAsync(listId))
                 .Select(m => m.EmailAddress)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            //for quick lookup when adding members
+            var contactLookup = contacts.ToDictionary(c => c.Email, StringComparer.OrdinalIgnoreCase);
 
             var newMembers = contacts
                 .Where(contact => !existingEmails.Contains(contact.Email))
@@ -76,14 +51,18 @@ namespace Application.Services
                 })
                 .ToList();
 
-            int syncCount = 0;
+            var addedContactList = new List<Entities.Contact>();
 
             foreach (var member in newMembers)
             {
                 try
                 {
                     await _mailChimpManager.Members.AddOrUpdateAsync(listId, member);
-                    syncCount++;
+
+                    if (contactLookup.TryGetValue(member.EmailAddress, out var addedContact))
+                    {
+                        addedContactList.Add(addedContact);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -91,7 +70,7 @@ namespace Application.Services
                 }
             }
 
-            return syncCount;
+            return addedContactList;
         }
 
         //My Mailchimp account doesn't support more than one list

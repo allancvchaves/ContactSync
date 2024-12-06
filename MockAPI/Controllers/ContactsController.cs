@@ -9,24 +9,22 @@ namespace MockAPI.Controllers
     public class ContactsController : ControllerBase
     {
         private readonly IMailChimpService _mailChimpService;
+        private readonly IMockAPIService _mockAPIService;
 
-        public ContactsController(IMailChimpService mailChimpService)
+        public ContactsController(IMailChimpService mailChimpService, IMockAPIService mockAPIService)
         {
             _mailChimpService = mailChimpService;
+            _mockAPIService = mockAPIService;
         }
 
         [HttpGet("sync")]
         public async Task<SyncContactsDto> SyncContacts()
         {
-            var (contactList, syncCount) = await _mailChimpService.SyncToMailChimp();
-            var dto = new SyncContactsDto(contactList) { SyncedContacts = syncCount };
-            return dto;
-        }
+            var contactsToAdd = await _mockAPIService.GetMockContacts();
 
-        [HttpGet("clear")]
-        public async Task ClearList()
-        {
-            await _mailChimpService.RemoveAllMembers();
+            var addedContacts = await _mailChimpService.SyncToMailChimp(contactsToAdd);
+
+            return new SyncContactsDto(addedContacts); ;
         }
 
     }

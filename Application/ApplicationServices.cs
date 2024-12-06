@@ -6,9 +6,12 @@ namespace Application
 {
     public static class ApplicationServices
     {
-        public static IServiceCollection RegisterMailChimpService(this IServiceCollection services)
+        public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddHttpClient<IMockAPIService, MockAPIService>();
+
             services.AddScoped<IMailChimpService, MailChimpService>();
+            services.AddScoped<IMockAPIService, MockAPIService>();
 
             return services;
         }
