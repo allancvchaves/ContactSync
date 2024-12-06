@@ -10,18 +10,18 @@
         {
             return new List<Contact>
             {
-                new Contact { FirstName = "Patricia", LastName = "Goodwin", Email = "Patricia.Goodwin542@hotmail.com" },
-                new Contact { FirstName = "Tracy", LastName = "Wyman", Email = "Tracy.Wyman123@yahoo.com" },
-                new Contact { FirstName = "Samuel", LastName = "Lemke", Email = "Samuel.Lemke876@hotmail.com" },
-                new Contact { FirstName = "Sandra", LastName = "Fay", Email = "Sandra.Fay902@gmail.com" },
-                new Contact { FirstName = "Brittany", LastName = "Blick", Email = "Brittany.Blick765@gmail.com" },
-                new Contact { FirstName = "Michael", LastName = "Stokes", Email = "Michael.Stokes423@yahoo.com" },
-                new Contact { FirstName = "Jessica", LastName = "Keebler", Email = "Jessica.Keebler321@hotmail.com" },
-                new Contact { FirstName = "Christopher", LastName = "Swift", Email = "Christopher.Swift678@gmail.com" },
-                new Contact { FirstName = "Emily", LastName = "Cormier", Email = "Emily.Cormier456@gmail.com" },
-                new Contact { FirstName = "Jonathan", LastName = "Daniels", Email = "Jonathan.Daniels223@gmail.com" },
-                new Contact { FirstName = "Rebecca", LastName = "Walsh", Email = "Rebecca.Walsh987@yahoo.com" },
-                new Contact { FirstName = "Daniel", LastName = "Barton", Email = "Daniel.Barton213@gmail.com" }
+                new Contact { FirstName = "Linda", LastName = "Reeves", Email = "Linda.Reeves789@gmail.com" },
+                new Contact { FirstName = "Andrew", LastName = "Holloway", Email = "Andrew.Holloway456@yahoo.com" },
+                new Contact { FirstName = "Karen", LastName = "McNeil", Email = "Karen.McNeil321@outlook.com" },
+                new Contact { FirstName = "Stephen", LastName = "Frost", Email = "Stephen.Frost654@hotmail.com" },
+                new Contact { FirstName = "Diana", LastName = "Manning", Email = "Diana.Manning123@gmail.com" },
+                new Contact { FirstName = "Ryan", LastName = "Woods", Email = "Ryan.Woods876@yahoo.com" },
+                new Contact { FirstName = "Laura", LastName = "Carlson", Email = "Laura.Carlson987@gmail.com" },
+                new Contact { FirstName = "George", LastName = "Peterson", Email = "George.Peterson123@hotmail.com" },
+                new Contact { FirstName = "Sophia", LastName = "Barnes", Email = "Sophia.Barnes654@gmail.com" },
+                new Contact { FirstName = "James", LastName = "Bishop", Email = "James.Bishop321@yahoo.com" },
+                new Contact { FirstName = "Elizabeth", LastName = "Sutton", Email = "Elizabeth.Sutton456@gmail.com" },
+                new Contact { FirstName = "Matthew", LastName = "Chandler", Email = "Matthew.Chandler789@hotmail.com" }
             };
         }
     }
