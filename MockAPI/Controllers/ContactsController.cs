@@ -6,9 +6,14 @@ namespace MockAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContactsController(IMailChimpService mailChimpService) : ControllerBase
+    public class ContactsController : ControllerBase
     {
-        IMailChimpService _mailChimpService = mailChimpService;
+        private readonly IMailChimpService _mailChimpService;
+
+        public ContactsController(IMailChimpService mailChimpService)
+        {
+            _mailChimpService = mailChimpService;
+        }
 
         [HttpGet("sync")]
         public async Task<SyncContactsDto> SyncContacts()
