@@ -1,6 +1,6 @@
 ﻿using Application.Entities;
 
-namespace MockAPI.Dtos
+namespace API.Dtos
 {
     public class SyncContactsDto
     {

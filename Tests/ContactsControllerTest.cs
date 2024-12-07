@@ -1,7 +1,7 @@
-﻿using Application.Entities;
+﻿using API.Controllers;
+using API.Dtos;
+using Application.Entities;
 using Application.Interfaces;
-using MockAPI.Controllers;
-using MockAPI.Dtos;
 using Moq;
 
 namespace Tests

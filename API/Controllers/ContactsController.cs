@@ -1,8 +1,8 @@
-﻿using Application.Interfaces;
+﻿using API.Dtos;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using MockAPI.Dtos;
 
-namespace MockAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -24,7 +24,7 @@ namespace MockAPI.Controllers
 
             var addedContacts = await _mailChimpService.SyncToMailChimp(contactsToAdd);
 
-            return new SyncContactsDto(addedContacts); ;
+            return new SyncContactsDto(addedContacts);
         }
 
     }
